@@ -3,23 +3,24 @@
 function validBraces(str) {
   var stack = [];
   var openers = ['(','{','['];
-  var closers = [')','}',']'];
   var brackets = {
     ')':'(',
     '}':'{',
     ']':'[',
   };
-  str.split('').forEach((paren) => {
-    if (openers.includes(paren)) {
-      stack.push(paren);
-    } else if (closers.includes(paren)) {
-      if (stack[stack.length-1] === brackets[paren]) {
-        stack.splice(stack.indexOf(brackets[paren]), 1);
+  var parenArr = str.split('');
+  for (var i = 0; i < parenArr.length; i++) {
+    console.log(stack);
+    if (openers.includes(parenArr[i])) {
+      stack.push(parenArr[i]);
+    } else {
+      if (stack[stack.length-1] === brackets[parenArr[i]]) {
+        stack.pop();
       } else {
-        stack.push('invalid');
+        return false;
       }
     }
-  });
+  }
   if (stack.length) {
     return false;
   } else {
