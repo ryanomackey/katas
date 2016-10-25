@@ -7,16 +7,33 @@ function formatDuration(seconds) {
     return timeParser(seconds, 'second');
   } else if (seconds >= 60 && seconds < 3600) {
     return minuteParser(seconds);
-  } else if (seconds >= 3600 && seconds < 86,400) {
+  } else if (seconds >= 3600 && seconds < 86400) {
     return hourParser(seconds);
-  } else if (seconds >= 86,400) {
+  } else if (seconds >= 86400 && seconds < 31536000) {
     return dayParser(seconds);
+  } else {
+    return yearParser(seconds);
+  }
+}
+
+function yearParser(seconds) {
+  var years = Math.floor(seconds / 365 / 24 / 60 / 60);
+  var days = seconds - (31536000 * years);
+  if (days) {
+    return timeParser(years, 'year') + ', ' + dayParser(days);
+  } else {
+    return timeParser(years, 'year');
   }
 }
 
 function dayParser(seconds) {
-  var days = Math.floor(seconds / 60 / 60 / 60);
-  console.log(days);
+  var days = Math.floor(seconds / 24 / 60 / 60);
+  var hours = seconds - (86400 * days);
+  if (hours) {
+    return timeParser(days, 'day') + ', ' + hourParser(hours);
+  } else {
+    return timeParser(days, 'day');
+  }
 }
 
 function hourParser(seconds) {
@@ -52,6 +69,7 @@ console.log(formatDuration(120)); // '2 minutes'
 console.log(formatDuration(3600)); // '1 hour'
 console.log(formatDuration(3662)); // '1 hour, 1 minute and 2 seconds'
 console.log(formatDuration(15731080)); // '182 days, 1 hour, 44 minutes and 40 seconds'
+console.log(formatDuration(132030240)); // '4 years, 68 days, 3 hours and 4 minutes'
 
 // Test.assertEquals(formatDuration(1), "1 second");
 // Test.assertEquals(formatDuration(62), "1 minute and 2 seconds");
